@@ -82,6 +82,12 @@ Aresta *kruskal (Grafo G){
     return AGM;
 }
 
+void adicionar_aresta (Grafo g, int indice, int peso, int u, int v){
+    g.arestas[indice].u = u;
+    g.arestas[indice].v = v;
+    g.arestas[indice].peso = peso;
+};
+
 int main() {
     Grafo g;
 

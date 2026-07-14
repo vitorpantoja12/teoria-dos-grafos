@@ -20,9 +20,9 @@ Grafo *Criar_Grafo(int vertices){
     Grafo *Novo_Grafo = malloc(sizeof(Grafo));
     Novo_Grafo->n_ver = vertices;
     Novo_Grafo->lista_de_adj = calloc(vertices, sizeof(No*));
-    
+
     return Novo_Grafo;
-};
+}
 
 void inserir_aresta(Grafo *g, int o, int d, int peso)
 {
@@ -34,9 +34,10 @@ void inserir_aresta(Grafo *g, int o, int d, int peso)
     g->lista_de_adj[o] = novo;
 }
 
-void dijkstra(Grafo *G, int origem){
+void dijkstra(Grafo *G, int origem)
+{
     int *resolvidos, tam_r;
-    No* p;
+    No *p;
 
     int dist[G->n_ver];
     int pai[G->n_ver];
@@ -46,19 +47,17 @@ void dijkstra(Grafo *G, int origem){
         dist[i] = INF;
         pai[i] = -1;
     }
-    
+
     dist[origem] = 0;
 
-    resolvidos = malloc(G->n_ver*sizeof(int));
+    resolvidos = malloc(G->n_ver * sizeof(int));
     tam_r = 0;
 
     for (int i = 0; i < G->n_ver; i++)
-    {
         resolvidos[i] = 0;
-    }
-
+        
     int min_dist, vertice_atual;
-    
+
     while (tam_r < G->n_ver)
     {
         min_dist = INF;
@@ -73,7 +72,8 @@ void dijkstra(Grafo *G, int origem){
             }
         }
 
-        if (vertice_atual == -1) break;
+        if (vertice_atual == -1)
+            break;
 
         resolvidos[vertice_atual] = 1;
         tam_r++;
@@ -83,14 +83,16 @@ void dijkstra(Grafo *G, int origem){
             int v = p->valor;
             int peso = p->peso;
 
-            if (resolvidos[v] == 0 && dist[v] > dist[vertice_atual]+peso)
+            if (resolvidos[v] == 0 &&
+                dist[vertice_atual] != INF &&
+                dist[v] > dist[vertice_atual] + peso)
             {
-                dist[v] = dist[vertice_atual]+peso;
+                dist[v] = dist[vertice_atual] + peso;
                 pai[v] = vertice_atual;
             }
         }
     }
-    
+
     printf("Origem: %d\n\n", origem);
 
     printf("Vertice\tDistancia\tPai\n");
@@ -111,4 +113,27 @@ void dijkstra(Grafo *G, int origem){
     }
 
     free(resolvidos);
+}
+
+int main()
+{
+    Grafo *g = Criar_Grafo(6);
+
+    inserir_aresta(g,0,1,4);
+    inserir_aresta(g,0,2,2);
+
+    inserir_aresta(g,1,2,5);
+    inserir_aresta(g,1,3,10);
+
+    inserir_aresta(g,2,4,3);
+
+    inserir_aresta(g,4,3,4);
+
+    inserir_aresta(g,3,5,11);
+
+    inserir_aresta(g,4,5,2);
+
+    dijkstra(g,0);
+
+    return 0;
 }
